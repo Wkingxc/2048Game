@@ -3,6 +3,8 @@ package Game;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
@@ -10,10 +12,12 @@ import java.util.Random;
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class Myframe extends JFrame implements KeyListener ,ActionListener {
 
+    String user;
     int[][] photos = new int[4][4];
 
+    String maxscore, maxnumber;
     int fail = 0;
-    long score = 0;
+    int score = 0;
     int success = 0;
     String theme = "A-";
 
@@ -26,8 +30,11 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
     JMenuItem editphoto = new JMenuItem("修改数据");
     JMenuItem person = new JMenuItem("制作人员");
 
-    public Myframe()
+    public Myframe(String user,String maxscore,String maxnumber)
     {
+        this.maxscore = maxscore;
+        this.maxnumber = maxnumber;
+        this.user = user;
         //初始化窗体
         start_frame();
         //初始化菜单栏
@@ -85,24 +92,11 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
         getContentPane().add(background);
 
 
-        JLabel scorelabel = new JLabel("积分：");
-        scorelabel.setBounds(50,15,70,20);
+        JLabel scorelabel = new JLabel("积分："+score+"      历史:  "+" 最高积分:"+maxscore+"   最大数字:"+maxnumber);
+        scorelabel.setBounds(15,15,500,20);
         scorelabel.setFont(new Font("Dialog", Font.BOLD,20));
         scorelabel.setForeground(Color.blue);
         getContentPane().add(scorelabel);
-
-        scorelabel = new JLabel(" "+ score);
-        scorelabel.setBounds(100,16,160,20);
-        scorelabel.setFont(new Font("Dialog", Font.BOLD,20));
-        scorelabel.setForeground(Color.red);
-        getContentPane().add(scorelabel);
-
-        JButton browse = new JButton("Don't touch");
-        browse.setBounds(350,16,150,16);
-        browse.setFont(new Font("Dialog",Font.BOLD,7));
-        browse.addMouseListener(new openboke());
-        browse.setFocusable(false);
-        getContentPane().add(browse);
 
         imgURL = Myframe.class.getResource("image/Back.jpg");
         JLabel back = new JLabel(new ImageIcon(imgURL));
@@ -117,7 +111,7 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
 
     }
 
-    //事件监听器
+    //TODO:事件监听器
     @Override
     public void keyPressed(KeyEvent e)
     {
@@ -144,6 +138,17 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
                         downmove();
                         randomnum();
                     }
+            case KeyEvent.VK_S ->
+                    {
+                        try {
+                            save();
+                            JOptionPane.showMessageDialog(null,"保存成功！");
+                            System.exit(0);
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                        }
+                    }
+
         }
         if(isFailure())
         {
@@ -260,7 +265,7 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
 
     public boolean isFailure()
     {
-        long v_score = score;
+        int v_score = score;
         int[][] temp = new int[4][4];
         copyArray(temp, photos);
         //left judge
@@ -415,6 +420,41 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
         }
         return false;
     }
+
+    public void save() throws IOException
+    {
+        FileInputStream fis = new FileInputStream("2048game.dat");
+        byte[] datas = new byte[fis.available()];
+        fis.read(datas);
+        String[] users = new String(datas).split("\n");
+        int index = 0;
+        for(int i=0; i<users.length;i++)
+        {
+            String[] temp = users[i].split(" ");
+            if(temp[0].equals(user))
+            {
+                index = i;
+                break;
+            }
+        }
+        int amaxscore = Math.max(score,Integer.parseInt(maxscore));
+        int amaxnumer = Integer.parseInt(maxnumber);
+        for(int[] i:photos)
+        {
+            for(int j: i)
+            {
+                amaxnumer = Math.max(j,amaxnumer);
+            }
+        }
+        FileWriter fw = new FileWriter("2048game.dat");
+        for(int i=0; i<users.length-1;i++)
+        {
+            fw.write(users[i]+"\n");
+        }
+        fw.write(user+" "+amaxscore+" "+amaxnumer+"\n");
+        fw.close();
+        fis.close();
+    }
     //用于子菜单的事件监听
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -458,7 +498,7 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
                 JOptionPane.showMessageDialog(null,"???","what are you doing?",JOptionPane.WARNING_MESSAGE);
             }else
             {
-                score = Long.parseLong(s);
+                score = Integer.parseInt(s);
                 JOptionPane.showMessageDialog(null,"修改成功！");
                 paint_view();
             }

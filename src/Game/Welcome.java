@@ -11,7 +11,7 @@ public class Welcome extends JFrame  {
 
     public Welcome()
     {
-        hello();
+        //hello();
     }
 
     public void hello()
@@ -79,7 +79,7 @@ public class Welcome extends JFrame  {
                 if(Math.abs(result-in_result)<1e-6)
                 {
                     JOptionPane.showMessageDialog(null,"Bingo!","验证成功",JOptionPane.PLAIN_MESSAGE);
-                    new Myframe();
+                    //new Myframe();
                     setVisible(false);
                 }else
                 {
@@ -129,7 +129,7 @@ public class Welcome extends JFrame  {
                 if(result==in_result)
                 {
                     JOptionPane.showMessageDialog(null,"Bingo!","验证成功",JOptionPane.PLAIN_MESSAGE);
-                    new Myframe();
+                    //new Myframe();
                     setVisible(false);
                 }else
                 {
