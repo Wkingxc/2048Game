@@ -7,11 +7,15 @@ import java.awt.event.MouseListener;
 import java.net.URL;
 import java.util.Random;
 
-public class Welcome extends JFrame  {
+public class PRcheck extends JFrame  {
 
-    public Welcome()
+    String username,maxscore,maxnumber;
+    public PRcheck(String user, String maxscore, String maxnumber)
     {
-        //hello();
+        this.username = user;
+        this.maxscore = maxscore;
+        this.maxnumber = maxnumber;
+        hello();
     }
 
     public void hello()
@@ -26,14 +30,14 @@ public class Welcome extends JFrame  {
         setLocationRelativeTo(null);
         //setAlwaysOnTop(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("欢迎使用");
+        setTitle("人机验证");
         setLayout(null);
 
-        URL img = Welcome.class.getResource("image/hello.png");
+        URL img = PRcheck.class.getResource("image/hello.png");
         JLabel helloimag = new JLabel(new ImageIcon(img));
         helloimag.setBounds(0,0,500,500);
 
-        JLabel hellotext = new JLabel("欢迎使用");
+        JLabel hellotext = new JLabel("人机验证");
         hellotext.setBounds(150,50,200,200);
         hellotext.setFont(new Font("行书",Font.BOLD,40));
         hellotext.setForeground(Color.green);
@@ -57,7 +61,6 @@ public class Welcome extends JFrame  {
 
         button1.addMouseListener(new Mouselisten1());
         button2.addMouseListener(new Mouselisten2());
-
         setVisible(true);
     }
 
@@ -79,7 +82,7 @@ public class Welcome extends JFrame  {
                 if(Math.abs(result-in_result)<1e-6)
                 {
                     JOptionPane.showMessageDialog(null,"Bingo!","验证成功",JOptionPane.PLAIN_MESSAGE);
-                    //new Myframe();
+                    new Myframe(username,maxscore,maxnumber);
                     setVisible(false);
                 }else
                 {
@@ -129,7 +132,7 @@ public class Welcome extends JFrame  {
                 if(result==in_result)
                 {
                     JOptionPane.showMessageDialog(null,"Bingo!","验证成功",JOptionPane.PLAIN_MESSAGE);
-                    //new Myframe();
+                    new Myframe(username,maxscore,maxnumber);
                     setVisible(false);
                 }else
                 {

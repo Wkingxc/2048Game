@@ -8,9 +8,10 @@ import java.io.*;
 
 public class LoginFrame extends JFrame implements ActionListener {
 
+
     FileInputStream fis = null;
     FileWriter fw = null;
-    JFrame frame = new JFrame();
+    static JFrame frame = new JFrame();
     JButton button1 = new JButton("登录");
     JLabel label1 = new JLabel("账户名:");
     //JLabel label2 = new JLabel("密码:");
@@ -89,7 +90,7 @@ public class LoginFrame extends JFrame implements ActionListener {
                 {
                     if(datas[i].equals(username))
                     {
-                        new Myframe(username,datas[i+1],datas[i+2]);
+                        new PRcheck(username,datas[i+1],datas[i+2]);
                         break;
                     }
                 }

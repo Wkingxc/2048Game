@@ -75,6 +75,11 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
             JLabel lose  = new JLabel(new ImageIcon(imgURL));
             lose.setBounds(85,100,334,228);
             getContentPane().add(lose);
+            try {
+                save();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         for(int i=0; i<4; i++)
         {
@@ -116,39 +121,43 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
     public void keyPressed(KeyEvent e)
     {
         int keycode = e.getKeyCode();
-        switch (keycode)
+        if(success!=1)
         {
-            case 37 ->
-                    {
-                        leftmove();
-                        randomnum();
-                    }
-            case 38 ->
-                    {
-                        upmove();
-                        randomnum();
-                    }
-            case 39 ->
-                    {
-                        rightmove();
-                        randomnum();
-                    }
-            case 40 ->
-                    {
-                        downmove();
-                        randomnum();
-                    }
-            case KeyEvent.VK_S ->
-                    {
-                        try {
-                            save();
-                            JOptionPane.showMessageDialog(null,"保存成功！");
-                            System.exit(0);
-                        } catch (IOException ioException) {
-                            ioException.printStackTrace();
+            switch (keycode)
+            {
+                case 37 ->
+                        {
+                            leftmove();
+                            randomnum();
                         }
-                    }
-
+                case 38 ->
+                        {
+                            upmove();
+                            randomnum();
+                        }
+                case 39 ->
+                        {
+                            rightmove();
+                            randomnum();
+                        }
+                case 40 ->
+                        {
+                            downmove();
+                            randomnum();
+                        }
+            }
+        }
+        if(keycode==KeyEvent.VK_S)
+        {
+            try {
+                save();
+                JOptionPane.showMessageDialog(null,"保存成功！");
+                LoginFrame.frame.setVisible(true);
+                setVisible(false);
+                //System.exit(0);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
         if(isFailure())
         {
@@ -421,13 +430,14 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
         return false;
     }
 
+    //TODO:保存游戏数据
     public void save() throws IOException
     {
         FileInputStream fis = new FileInputStream("2048game.dat");
         byte[] datas = new byte[fis.available()];
         fis.read(datas);
         String[] users = new String(datas).split("\n");
-        int index = 0;
+        int index = 0;//获取当前用户的序号
         for(int i=0; i<users.length;i++)
         {
             String[] temp = users[i].split(" ");
@@ -447,11 +457,16 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
             }
         }
         FileWriter fw = new FileWriter("2048game.dat");
-        for(int i=0; i<users.length-1;i++)
+        for(int i=0; i<users.length;i++)
         {
-            fw.write(users[i]+"\n");
+            if(i!=index)
+            {
+                fw.write(users[i]+"\n");
+            }else
+            {
+                fw.write(user+" "+amaxscore+" "+amaxnumer+"\n");
+            }
         }
-        fw.write(user+" "+amaxscore+" "+amaxnumer+"\n");
         fw.close();
         fis.close();
     }
