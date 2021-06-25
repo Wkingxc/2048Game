@@ -10,6 +10,7 @@ import java.util.Random;
 public class PRcheck extends JFrame  {
 
     String username,maxscore,maxnumber;
+    //从登录窗口获取用户数据并保存
     public PRcheck(String user, String maxscore, String maxnumber)
     {
         this.username = user;
@@ -18,6 +19,7 @@ public class PRcheck extends JFrame  {
         hello();
     }
 
+    //绘制窗口
     public void hello()
     {
         try {
@@ -64,6 +66,7 @@ public class PRcheck extends JFrame  {
         setVisible(true);
     }
 
+    //两个按钮对应的功能
     class Mouselisten1 implements MouseListener
     {
         @Override

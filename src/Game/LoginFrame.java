@@ -17,6 +17,8 @@ public class LoginFrame extends JFrame implements ActionListener {
     //JLabel label2 = new JLabel("密码:");
     JLabel label3 = new JLabel("欢迎使用！");
     JTextField account = new JTextField();
+
+    //操作本地用户数据
     LoginFrame()
     {
         try {
@@ -33,6 +35,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         }
         go();
     }
+    //绘制窗口
     public void go()
     {
         frame.setSize(500,450);
@@ -57,6 +60,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         frame.setVisible(true);
     }
 
+    //载入本地用户数据到内存
     public String load() throws IOException
     {
         fis = new FileInputStream("2048game.dat");
@@ -65,6 +69,8 @@ public class LoginFrame extends JFrame implements ActionListener {
         fis.close();
         return new String(datas);
     }
+
+    //按钮功能的实现
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("登录"))

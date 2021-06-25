@@ -178,6 +178,7 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
 
     }
 
+    //操纵数组的算法以及辅助函数
     public void leftmove()
     {
         for(int x=0; x<4; x++)
@@ -208,7 +209,6 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
 
         }
     }
-
     public void rightmove()
     {
         for(int i=0; i<4 ;i++)
@@ -221,21 +221,18 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
             reverse(photos[i]);
         }
     }
-
     public void upmove()
     {
         anticlockwise();
         leftmove();
         clockwise();
     }
-
     public void downmove()
     {
         clockwise();
         leftmove();
         anticlockwise();
     }
-
     public void reverse(int []a)
     {
         for(int start=0,end=a.length-1; start<end; start++,end--)
@@ -245,7 +242,6 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
             a[end] = temp;
         }
     }
-
     public void clockwise()
     {
         int[][] a = new int[4][4];
@@ -258,7 +254,6 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
         }
         System.arraycopy(a, 0, photos, 0, 4);
     }
-
     public void anticlockwise()
     {
         int[][] a = new int[4][4];
@@ -272,6 +267,22 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
         System.arraycopy(a, 0, photos, 0, 4);
     }
 
+    //判断是否成功
+    public boolean issuccess()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                if(photos[i][j]==2048)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    //判断失败
     public boolean isFailure()
     {
         int v_score = score;
@@ -322,7 +333,6 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
             System.arraycopy(src[i],0,dest[i],0,column);
         }
     }
-
     public boolean equalArray(int[][] a, int[][] b)
     {
         int line = a.length;
@@ -340,6 +350,7 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
         return true;
     }
 
+    //每次移动时，新方块出现的位置和数字大小（按照标准游戏设计概率）
     public void randomnum()
     {
         int[] a = new int[16];
@@ -372,13 +383,13 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
             photos[x][y] = value;
         }
     }
-
     public void initPhoto()
     {
         randomnum();
         randomnum();
     }
 
+    //绘制菜单栏
     public void initMenu()
     {
         JMenuBar menuBar = new JMenuBar();
@@ -387,11 +398,13 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
         JMenu menu2 = new JMenu("皮肤");
         JMenu menu3 = new JMenu("修改器");
         JMenu menu4 = new JMenu("制作人员");
+        JMenu menu5 = new JMenu("按S键保存");
 
         menuBar.add(menu1);
         menuBar.add(menu2);
         menuBar.add(menu3);
         menuBar.add(menu4);
+        menuBar.add(menu5);
 
         menu1.add(xin);
         menu2.add(item1);
@@ -415,20 +428,6 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
         setJMenuBar(menuBar);
     }
 
-    public boolean issuccess()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                if(photos[i][j]==2048)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     //TODO:保存游戏数据
     public void save() throws IOException
@@ -470,6 +469,7 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
         fw.close();
         fis.close();
     }
+
     //用于子菜单的事件监听
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -538,46 +538,6 @@ public class Myframe extends JFrame implements KeyListener ,ActionListener {
         else if(e.getSource()==person)
         {
             new MadePerson();
-        }
-    }
-
-    static class openboke implements MouseListener
-    {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-
-            for (int i = 0; i < 20; i++)
-            {
-                try
-                {
-                    Runtime.getRuntime().exec(
-                            "cmd   /c   start   https://www.cnblogs.com/wpysxc/");
-                } catch (IOException x)
-                {
-                    x.printStackTrace();
-                }
-            }
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
         }
     }
 }
